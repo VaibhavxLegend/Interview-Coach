@@ -30,8 +30,40 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files (keep *_example in git)
+.env
+.env.*
+!.env.example
+!.env.local.example
+server/.env
+server/.env.*
+!server/.env.example
+
+# virtual environments
+.venv/
+venv/
+env/
+server/.venv/
+server/venv/
+server/env/
+
+# python artifacts
+*.py[cod]
+__pycache__/
+server/__pycache__/
+.pytest_cache/
+server/.pytest_cache/
+.mypy_cache/
+server/.mypy_cache/
+.ruff_cache/
+server/.ruff_cache/
+.pytype/
+.ipynb_checkpoints/
+.coverage
+.coverage.*
+.cache/
+*.so
+*.pyd
 
 # vercel
 .vercel
@@ -39,3 +71,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editors/ide
+.vscode/
+.idea/
+*.code-workspace
+
+# os files
+Thumbs.db
+ehthumbs.db
+Icon?
+*.swp
+*.swo
+
+# docker
+docker-compose.override.yml
