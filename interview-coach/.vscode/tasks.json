@@ -1,0 +1,45 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start FastAPI API",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"python --version >nul 2>&1 && python -c \"import sys; import uvicorn; print('OK')\" || echo PYTHON_MISSING"
+			],
+			"problemMatcher": [
+				"$eslint - stylish"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Check Python & Uvicorn",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"python --version >nul 2>&1 && python -c \"import sys; import uvicorn; print('OK')\" || echo PYTHON_MISSING"
+			],
+			"problemMatcher": [
+				"$eslint - stylish"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Start Next.js dev",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev"
+			],
+			"isBackground": true,
+			"problemMatcher": [
+				"$eslint - stylish"
+			],
+			"group": "build"
+		}
+	]
+}
