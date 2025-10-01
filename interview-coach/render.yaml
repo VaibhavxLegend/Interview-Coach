@@ -37,7 +37,7 @@ services:
           name: interview-coach-redis
           property: connectionString
       - key: CORS_ORIGINS
-        value: "*"
+        value: "*"  # Change this to your frontend URL(s) after deployment for security
       - key: ORCHESTRATOR
         value: langgraph
       # Optional: Add your API keys via Render dashboard as secret environment variables
