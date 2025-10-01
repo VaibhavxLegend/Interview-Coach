@@ -1,0 +1,52 @@
+services:
+  # PostgreSQL Database with pgvector extension
+  - type: pserv
+    name: interview-coach-db
+    plan: starter
+    region: oregon
+    databaseName: interview_coach
+    databaseUser: interview_coach_user
+    ipAllowList: []
+
+  # Redis Cache
+  - type: redis
+    name: interview-coach-redis
+    plan: starter
+    region: oregon
+    maxmemoryPolicy: noeviction
+    ipAllowList: []
+
+  # FastAPI Backend
+  - type: web
+    name: interview-coach-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./server/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: interview-coach-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: interview-coach-redis
+          property: connectionString
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: ORCHESTRATOR
+        value: langgraph
+      # Optional: Add your API keys via Render dashboard as secret environment variables
+      # - key: OPENAI_API_KEY
+      #   sync: false
+      # - key: ANTHROPIC_API_KEY
+      #   sync: false
+      # - key: LANGSMITH_API_KEY
+      #   sync: false
+      # - key: POWER_AUTOMATE_WEBHOOK_URL
+      #   sync: false
+    healthCheckPath: /api/health
