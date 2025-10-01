@@ -99,3 +99,45 @@ See `docs/temporal.md` for the workflow design and details.
 - Seed a couple ideal answers: `python -c "from app.init_db import init; init()"` (in server context)
 - Health check: GET <http://localhost:8000/api/health>
 - Update `.env` and `.env.local` to point API/DB anywhere you like.
+
+## Deploying Frontend to Vercel
+
+The Next.js frontend can be easily deployed to Vercel:
+
+1. **Import your repository** to Vercel (via GitHub, GitLab, or Bitbucket)
+
+2. **Configure the project settings:**
+   - Framework Preset: **Next.js**
+   - Root Directory: **interview-coach**
+   - Build Command: `npm run build` (default, automatically detected)
+   - Output Directory: `.next` (default, automatically detected)
+   - Install Command: `npm install` (default, automatically detected)
+
+3. **Set environment variables** in Vercel dashboard:
+   - `NEXT_PUBLIC_API_BASE` - URL of your backend API (e.g., `https://your-api-domain.com`)
+
+4. **Deploy** - Vercel will automatically build and deploy your application
+
+### Important Notes:
+
+- The backend API needs to be deployed separately (Vercel doesn't support Python backends in the same project)
+- Make sure your backend API allows CORS requests from your Vercel domain
+- Consider using Vercel's Environment Variables for different environments (Production, Preview, Development)
+
+### Alternative: Deploy using Vercel CLI
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Navigate to the frontend directory
+cd interview-coach
+
+# Deploy
+vercel
+
+# Deploy to production
+vercel --prod
+```
+
+The CLI will automatically detect the Next.js framework and configure the deployment.
