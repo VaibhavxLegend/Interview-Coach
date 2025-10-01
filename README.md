@@ -94,6 +94,24 @@ python -m server.temporal.worker
 
 See `docs/temporal.md` for the workflow design and details.
 
+## Deployment
+
+### Render (Backend Hosting)
+
+Deploy the FastAPI backend to Render with one click:
+
+1. Go to [Render Dashboard](https://dashboard.render.com/)
+2. Click **New** → **Blueprint**
+3. Connect this repository
+4. Render will auto-detect `interview-coach/render.yaml` and create:
+   - PostgreSQL database (with pgvector)
+   - Redis cache
+   - FastAPI web service
+
+For detailed instructions, see [interview-coach/RENDER_DEPLOY.md](interview-coach/RENDER_DEPLOY.md)
+
+**Important**: After deployment, add your API keys (OPENAI_API_KEY, etc.) as secret environment variables in the Render dashboard.
+
 ## Dev tips
 
 - Seed a couple ideal answers: `python -c "from app.init_db import init; init()"` (in server context)
