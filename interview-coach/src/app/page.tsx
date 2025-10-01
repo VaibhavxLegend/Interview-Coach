@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { startSession as apiStart, submitAnswer as apiSubmit, completeSession as apiComplete } from "../lib/api";
 
 type Message = { role: "system" | "assistant" | "user"; content: string };
 
@@ -23,14 +24,11 @@ export default function Home() {
   };
   const recognitionRef = useRef<SRType | null>(null);
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
-
   useEffect(() => {
     // Start session on load
     const start = async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/sessions/start`, { method: "POST" });
-        const data = await res.json();
+        const data = await apiStart();
         setSessionId(data.session_id);
         setQuestion(data.question);
         setMessages([{ role: "assistant", content: data.question }]);
@@ -47,12 +45,7 @@ export default function Home() {
     setMessages((m) => [...m, { role: "user", content: answer }]);
     setInput("");
     try {
-      const res = await fetch(`${API_BASE}/api/qa/${sessionId}/answer`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, answer }),
-      });
-      const data = await res.json();
+      const data = await apiSubmit(sessionId, question, answer);
       const evalText = `Score: ${data.evaluation.overall}/10\n` +
         `- Clarity: ${data.evaluation.clarity}\n` +
         `- Conciseness: ${data.evaluation.conciseness}\n` +
@@ -142,12 +135,7 @@ export default function Home() {
             onClick={async () => {
               if (!sessionId) return;
               try {
-                const res = await fetch(`${API_BASE}/api/sessions/${sessionId}/complete`, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ email: email || undefined }),
-                });
-                const data = await res.json();
+                const data = await apiComplete(sessionId, email || undefined);
                 setSummary(data.summary);
               } catch (e) {
                 console.error(e);
